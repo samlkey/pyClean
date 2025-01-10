@@ -26,27 +26,33 @@ btn = ttk.Button(root, text="Browse", command=on_click)
 #lambda for gathering params
 run = ttk.Button(root, text="Run", command=lambda: Run(params={
     "dir": lbl.cget("text"),
-    "folder_filter": folder_int.get(),
-    "size_filter": size_int.get(),
-    "empty_filter": empty_int.get()
+    "type_filter": selected_option.get(),
+    "empty_filter": empty_int.get(),
+    "recursive_filter": recursive_int.get() 
 }))
 
-#filters
-folder_int = tkinter.IntVar()
-folder_check = ttk.Checkbutton(root, text="Filter based on Format?", variable=folder_int)
+#filters radio
+selected_option = tkinter.StringVar(value="Filter based on Format?")
+folder_check = ttk.Radiobutton(root, text="Filter based on Format?", value="type", variable=selected_option)
+size_check = ttk.Radiobutton(root, text="Filter based on File Size?", value="size", variable=selected_option)
 
-size_int = tkinter.IntVar()
-size_check = ttk.Checkbutton(root, text="Filter based on File Size?", variable=size_int)
-
+#filters check
 empty_int = tkinter.IntVar()
 empty_check = ttk.Checkbutton(root, text="Remove Empty Folders?", variable=empty_int)
 
-btn.pack()
-lbl.pack()
-run.pack()
+recursive_int = tkinter.IntVar()
+recursive_check = ttk.Checkbutton(root, text="Recursive?", variable=recursive_int)
+
+btn.pack(pady=15)
+lbl.pack(pady=15)
+
 folder_check.pack()
 size_check.pack()
+
 empty_check.pack()
+recursive_check.pack()
+
+run.pack(pady=15)
 
 sv_ttk.set_theme("dark")
 

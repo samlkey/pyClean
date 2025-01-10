@@ -2,11 +2,14 @@ import os
 import shutil
 
 def Run(params):
+    print(params["type_filter"])
+
+
     #change this to radio buttons as needed
-    if params["dir"] != "" and params["folder_filter"] == 1:
+    if params["dir"] != "" and params["type_filter"] == "type":
         sort_files_by_extension(params["dir"])
 
-    if params["dir"] != "" and params["size_filter"] == 1:
+    if params["dir"] != "" and params["type_filter"] == "size":
         sort_files_by_size(params["dir"])
 
     if params["dir"] != "" and params["empty_filter"] == 1:
