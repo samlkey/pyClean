@@ -1,9 +1,16 @@
 import os 
 import shutil
 
-def Run(params):
-    print(params["type_filter"])
+import tkinter.messagebox
 
+def Run(params):
+
+    if params["recursive_filter"] == 1:
+        warningContent = "Recursive filtering enabled, only use this on controlled folders, as every subfolder will be cleaned. Do you want to continue?"
+        if tkinter.messagebox.askquestion("Recursive Filter", warningContent) == "no":
+            return
+
+        ##if no, return
 
     #change this to radio buttons as needed
     if params["dir"] != "" and params["type_filter"] == "type":

@@ -1,7 +1,7 @@
 import tkinter
 import sv_ttk
 
-from cleanMethods import Run
+from clean_methods import Run
 from tkinter import filedialog
 from tkinter import ttk
 from tkinter import *
@@ -32,22 +32,27 @@ run = ttk.Button(root, text="Run", command=lambda: Run(params={
 }))
 
 #filters radio
-selected_option = tkinter.StringVar(value="Filter based on Format?")
-folder_check = ttk.Radiobutton(root, text="Filter based on Format?", value="type", variable=selected_option)
-size_check = ttk.Radiobutton(root, text="Filter based on File Size?", value="size", variable=selected_option)
+selected_option = tkinter.StringVar(value="Filter based on Format")
+folder_check = ttk.Radiobutton(root, text="Filter based on Format", value="type", variable=selected_option)
+
+size_check = ttk.Radiobutton(root, text="Filter based on File Size", value="size", variable=selected_option)
+size_textbox_min = ttk.Entry()
+size_textbox_max = ttk.Entry()
 
 #filters check
 empty_int = tkinter.IntVar()
-empty_check = ttk.Checkbutton(root, text="Remove Empty Folders?", variable=empty_int)
+empty_check = ttk.Checkbutton(root, text="Remove Empty Folders", variable=empty_int)
 
 recursive_int = tkinter.IntVar()
-recursive_check = ttk.Checkbutton(root, text="Recursive?", variable=recursive_int)
+recursive_check = ttk.Checkbutton(root, text="Recursive", variable=recursive_int)
 
 btn.pack(pady=15)
 lbl.pack(pady=15)
 
 folder_check.pack()
 size_check.pack()
+size_textbox_min.pack()
+size_textbox_max.pack()
 
 empty_check.pack()
 recursive_check.pack()
