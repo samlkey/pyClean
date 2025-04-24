@@ -1,13 +1,8 @@
 #dependencies
 import tkinter as tk
-import tkinter.font as tkFont
-import sv_ttk
 
-from clean_methods import Run
-from ui.ScrollableFrame import *
-from ui.EventFrame import *
-from ui.FontLibrary import *
-from ui.OptionLibrary import *
+from ui import ScrollableFrame, EventFrame
+from lib import FontLibrary, OptionLibrary
 
 from tkinter import filedialog
 from tkinter import ttk
@@ -26,29 +21,19 @@ def main():
     root.update_idletasks()
 
     # Options ----------------------------------
+
     ol = OptionLibrary()
 
     sf = ScrollableFrame(root)
     sf.show(0, 0, (root.winfo_width() // 2) - 25, root.winfo_height() - 30) 
 
-    sf.insert(Label(sf.frame, text="Windows", font=fonts.get("heading"), padx=10, pady=10), 0, 0)
-
     i = 1
-    for key, var in ol.sys_opt.items():
-        sf.insert(Checkbutton(sf.frame, text=key, font=fonts.get("option"), variable=var), 1, i)
+    for category, options in ol.options.items():
+        sf.insert(Label(sf.frame, text=category, font=fonts.get("heading"), padx=10, pady=10), 0, i)
         i += 1
-
-    sf.insert(Label(sf.frame, text="Internet Explorer", font=fonts.get("heading"), padx=10, pady=10), 0, i)
-    i += 1
-    for key, var in ol.ie_opt.items():
-        sf.insert(Checkbutton(sf.frame, text=key, font=fonts.get("option"), variable=var), 1, i)
-        i += 1
-
-    sf.insert(Label(sf.frame, text="Windows Downloads", font=fonts.get("heading"), padx=10, pady=10), 0, i)
-    i += 1
-    for key, var in ol.dw_opt.items():
-        sf.insert(Checkbutton(sf.frame, text=key, font=fonts.get("option"), variable=var), 1, i)
-        i += 1
+        for name, var in options.items():
+            sf.insert(Checkbutton(sf.frame, text=name, font=fonts.get("option"), variable=var), 1, i)
+            i += 1
 
     #Event Frame --------------------------------
 
@@ -63,7 +48,6 @@ def main():
 
     # -------------------------------------------
 
-    # sv_ttk.set_theme("dark")
     root.mainloop()
     
 main()
