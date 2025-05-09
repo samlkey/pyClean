@@ -3,6 +3,7 @@ import tkinter as tk
 
 from ui import ScrollableFrame, EventFrame
 from lib import FontLibrary, OptionLibrary
+from methods import Analyser
 
 from tkinter import filedialog
 from tkinter import ttk
@@ -15,7 +16,7 @@ def main():
     root.resizable(height=FALSE, width=FALSE)
 
     # Font 
-    fonts = FontLibrary(root)
+    fonts = FontLibrary()
 
     # Force geometry update
     root.update_idletasks()
@@ -40,63 +41,56 @@ def main():
     ev = EventFrame(root)
     ev.show(1, 0, (root.winfo_width() // 2) - 50, root.winfo_height() - 30)
     
-    ev.insert(ttk.Progressbar(ev.frame, orient="horizontal", length=400, mode="determinate"), 0, 0, "nw")
-    ev.insert(Label(ev.frame, text="0%", font=fonts.get("bold"), padx=15), 1, 0, "nw")
+    ev.insert(ttk.Progressbar(ev.frame, orient="horizontal", length=400, mode="determinate", ), "prog_bar", 0, 0, "nw")
+    ev.insert(Label(ev.frame, text="0%", font=fonts.get("bold"), padx=10), "prog_lbl", 1, 0, "nw")
 
-    ev.insert(Button(ev.frame, text="Analyse", width=20), 0, 1, "nw")
-    ev.insert(Button(ev.frame, text="Run", width=20), 0, 2, "nw")
+    ev.insert(Button(ev.frame, text="Analyse", width=17, command=lambda: run_analyse(ol, ev)), "analyse_btn", 0, 1, "nw")
+    ev.insert(Button(ev.frame, text="Run", width=17), "run_btn", 0, 1)
+
+    ev.insert(Label(ev.frame, text="", font=fonts.get("bold")), "filler", 0, 3, "nw")
+
+    ev.insert(Label(ev.frame, text="Total Files: 0", font=fonts.get("bold")), "file_lbl", 0, 4, "nw")
+    ev.insert(Label(ev.frame, text="Size: 0KB", font=fonts.get("bold")), "size_lbl", 0, 5, "nw")
+    ev.insert(Label(ev.frame, text="Files:", font=fonts.get("bold")), "fileid_lbl", 0, 6, "nw")
 
     # -------------------------------------------
 
     root.mainloop()
+
+def run_analyse(ol, ev):
+    # RESET LABELS THROUGH EVENT FRAME
+
+    ev.elements["file_lbl"].config(text="Total Files: 0")
+    ev.elements["size_lbl"].config(text="Size: 0KB")
+
+
+    ayl = Analyser(ev.elements["prog_bar"], ev.elements["prog_lbl"])
     
+    info = ayl.analyse(ol)
+    print(info)
+
+    if info == None:
+        return
+    
+    # UPDATE LABELS THROUGH EVENT FRAME
+
+    ev.elements["file_lbl"].config(text=f"Total Files: {str(info["Total Files"])}")
+    ev.elements["size_lbl"].config(text=f"Size: {str(info["Size"])}KB")
+
+    # Font 
+    fonts = FontLibrary()
+    i = 1
+
+    for file in info["Files"]:
+        var = IntVar
+        ev.insert(Checkbutton(ev.frame, text=file, font=fonts.get("bold"), padx=15, variable=var), f"filelst_lbl{i}", 0, i+6, "nw")
+        i += 1
+        
+
 main()
 #dont forget to load the venv
 
 #ttk vs tk
 #https://stackoverflow.com/questions/19561727/what-is-the-difference-between-the-widgets-of-tkinter-and-tkinter-ttk-in-python
 
-
-
-
-    # lbl = ttk.Label(root, background="white", foreground="black", font=("Arial", 14), text="")
-    # lbl.config()
-    # #lbl.grid(row=0, column=0)
-    # btn = ttk.Button(root, text="Browse", command=lambda: on_click(lbl))
-
-    # #Need to gather filters and send them over to Run
-    # #lambda for gathering params
-    # run = ttk.Button(root, text="Run", command=lambda: Run(params={
-    #     "dir": lbl.cget("text"),
-    #     "type_filter": selected_option.get(),
-    #     "empty_filter": empty_int.get(),
-    #     "recursive_filter": recursive_int.get() 
-    # }))
-
-    # #filters radio
-    # selected_option = tkinter.StringVar(value="Filter based on Format")
-    # folder_check = ttk.Radiobutton(root, text="Filter based on Format", value="type", variable=selected_option)
-
-    # size_check = ttk.Radiobutton(root, text="Filter based on File Size", value="size", variable=selected_option)
-    # size_textbox_min = ttk.Entry()
-    # size_textbox_max = ttk.Entry()
-
-    # #filters check
-    # empty_int = tkinter.IntVar()
-    # empty_check = ttk.Checkbutton(root, text="Remove Empty Folders", variable=empty_int)
-
-    # recursive_int = tkinter.IntVar()
-    # recursive_check = ttk.Checkbutton(root, text="Recursive", variable=recursive_int)
-
-    # # btn.pack(pady=15)
-    # # lbl.pack(pady=15)
-
-    # # folder_check.pack()
-    # # size_check.pack()
-    # # size_textbox_min.pack()
-    # # size_textbox_max.pack()
-
-    # # empty_check.pack()
-    # # recursive_check.pack()
-
-    # # run.pack(pady=15)
+#make this a class mayb? so I can update progress bar without having to pass it through

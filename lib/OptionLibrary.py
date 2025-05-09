@@ -26,3 +26,12 @@ class OptionLibrary:
                 "Documents": tk.IntVar()
             }
         }
+    
+    def get_sel_options(self):
+        sel = [] 
+        for category, options in self.options.items():
+            for name, var in options.items():
+                if(var.get() == 1): sel.append(name)
+
+        return sel 
+
