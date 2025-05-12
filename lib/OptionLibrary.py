@@ -4,12 +4,13 @@ class OptionLibrary:
     def __init__(self):
         # Options
         self.options = {
-            "Windows": {
-                "Apps/Programs": tk.IntVar(),
-                "Compressed Files": tk.IntVar(),
+            "Windows Directory": {
+                "Desktop": tk.IntVar(),
+                "Documents": tk.IntVar(),
+                "Downloads": tk.IntVar(),
+                "Music": tk.IntVar(),
                 "Pictures/Images": tk.IntVar(),
                 "Audio/Video": tk.IntVar(),
-                "Documents": tk.IntVar()
             },
             "Internet Explorer": {
                 "Clear Cache": tk.IntVar(),
@@ -17,14 +18,14 @@ class OptionLibrary:
                 "Clear Cookies": tk.IntVar(),
                 "Saved Passwords": tk.IntVar(),
                 "Delete Browsing History": tk.IntVar()
-            },
-            "Downloads": {
-                "Apps/Programs": tk.IntVar(),
-                "Compressed Files": tk.IntVar(),
-                "Pictures/Images": tk.IntVar(),
-                "Audio/Video": tk.IntVar(),
-                "Documents": tk.IntVar()
             }
+            # "Downloads": {
+            #     "Apps/Programs": tk.IntVar(),
+            #     "Compressed Files": tk.IntVar(),
+            #     "Pictures/Images": tk.IntVar(),
+            #     "Audio/Video": tk.IntVar(),
+            #     "Documents": tk.IntVar()
+            # }
         }
     
     def get_sel_options(self):
