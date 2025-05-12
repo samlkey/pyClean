@@ -25,5 +25,9 @@ class ExtensionLibrary:
                 ".jpg", ".jpeg", ".png", ".gif", ".bmp",
                 ".tiff", ".tif", ".webp", ".heic", ".heif",
                 ".svg", ".raw", ".cr2", ".nef", ".orf", ".sr2"
+            ],
+            "Audio/Video": [
+                ".mp4", ".mkv", ".avi", ".mov", ".flv", ".wmv", ".webm", ".mpeg", ".mpg", ".3gp",
+                ".mp3", ".wav", ".flac", ".aac", ".ogg", ".wma", ".m4a", ".alac", ".aiff", ".opus"
             ]
         }

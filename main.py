@@ -16,7 +16,7 @@ class MainWindow:
         self.ev = EventFrame(self.root)
 
         self.root.title("pyClean")
-        self.root.geometry("1000x370")
+        self.root.geometry("1200x400")
         self.root.resizable(height=FALSE, width=FALSE)
         self.root.update_idletasks()
 
@@ -34,46 +34,52 @@ class MainWindow:
         
         #Event Frame ----------------------------------
 
-        self.ev.show(1, 0, (self.root.winfo_width() // 2) - 50, self.root.winfo_height() - 30)      
+        self.ev.show(1, 0, (self.root.winfo_width() // 2) - 70, self.root.winfo_height() - 50)      
         self.ev.insert(ttk.Progressbar(self.ev.frame, orient="horizontal", length=400, mode="determinate", ), "prog_bar", 0, 0, "nw")
-        self.ev.insert(Label(self.ev.frame, text="0%", font=self.fl.get("bold"), padx=10), "prog_lbl", 1, 0, "nw")   
         self.ev.insert(Button(self.ev.frame, text="Analyse", width=17, command=lambda: self.run_analyse()), "analyse_btn", 0, 1, "nw")
-        self.ev.insert(Button(self.ev.frame, text="Run", width=17), "run_btn", 0, 1)   
-        self.ev.insert(Label(self.ev.frame, text="", font=self.fl.get("bold")), "filler", 0, 3, "nw")   
-        self.ev.insert(Label(self.ev.frame, text="Total Files: 0", font=self.fl.get("bold")), "file_lbl", 0, 4, "nw")
-        self.ev.insert(Label(self.ev.frame, text="Size: 0KB", font=self.fl.get("bold")), "size_lbl", 0, 5, "nw")
-        self.ev.insert(Label(self.ev.frame, text="Files:", font=self.fl.get("bold")), "fileid_lbl", 0, 6, "nw")
+        # self.ev.insert(Button(self.ev.frame, text="Run", width=17), "run_btn", 0, 1)   
+        # self.ev.insert(Label(self.ev.frame, text="", font=self.fl.get("bold")), "filler", 0, 3, "nw")   
+        self.ev.insert(Label(self.ev.frame, text="Total Files: 0", font=self.fl.get("bold")), "file_lbl", 0, 2, "nw")
+        self.ev.insert(Label(self.ev.frame, text="Size: 0KB", font=self.fl.get("bold")), "size_lbl", 0, 3, "nw")
+        self.ev.insert(Label(self.ev.frame, text="Files:", font=self.fl.get("bold")), "fileid_lbl", 0, 4, "nw")
 
         # ---------------------------------------------
 
         self.root.mainloop()
 
     def run_analyse(self):
+        # CLEAR LABELS FROM FILES: 
+        for i in range(self.ev.files_rendered):
+            self.ev.remove(f"filelst_lbl{i}")
+            print(f"filelst_lbl{i} removed")
+
+        self.ev.files_rendered = 0 
+
         # RESET LABELS THROUGH EVENT FRAME
         self.ev.elements["file_lbl"].config(text="Total Files: 0")
         self.ev.elements["size_lbl"].config(text="Size: 0KB")
 
-        ayl = Analyser(self.ev.elements["prog_bar"], self.ev.elements["prog_lbl"])
+        ayl = Analyser(self.ev.elements["prog_bar"])
         info = ayl.analyse(self.ol)
-        print(info)
 
         if info == None:
             return
         
-        # UPDATE LABELS THROUGH EVENT FRAME
+        # # UPDATE LABELS THROUGH EVENT FRAME
         self.ev.elements["file_lbl"].config(text=f"Total Files: {str(info["Total Files"])}")
         self.ev.elements["size_lbl"].config(text=f"Size: {str(info["Size"])}KB")
 
         # Font
         fonts = FontLibrary()
-        i = 1
+        i = 0
 
         for file in info["Files"]:
             var = IntVar
             self.ev.insert(Checkbutton(self.ev.frame, text=file, font=fonts.get("bold"), padx=15, variable=var), f"filelst_lbl{i}", 0, i+6, "nw")
             i += 1
+            self.ev.files_rendered += 1
 
-
+        
 if __name__ == "__main__":
     app = MainWindow()
     app.show()

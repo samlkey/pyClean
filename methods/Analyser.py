@@ -5,9 +5,8 @@ from tkinter import messagebox
 import os
 
 class Analyser:
-    def __init__(self, prog, prog_lbl):
+    def __init__(self, prog):
         self.progress = prog
-        self.progress_lbl = prog_lbl
         self.extensions = ExtensionLibrary().extensions
         
         self.analyse_info = {
@@ -17,11 +16,10 @@ class Analyser:
         }
 
         self.progress["value"] = 0
-        self.progress_lbl.config(text="0%")
-
         self.actions = {
             "Documents": lambda: self.directory_clean("Documents", "Documents"),
-            "Pictures/Images": lambda: self.directory_clean("Pictures", "Pictures/Images")
+            "Pictures/Images": lambda: self.directory_clean("Pictures", "Pictures/Images"),
+            "Audio/Video": lambda: self.directory_clean("Videos", "Audio/Video")
         }
 
     def analyse(self, ol):
@@ -36,7 +34,7 @@ class Analyser:
             self.actions.get(cmd, self.unknown)()
 
         self.progress["value"] = 100
-        self.progress_lbl.config(text="100%")
+        # self.progress_lbl.config(text="100%")
         return self.analyse_info
 
 
@@ -48,7 +46,7 @@ class Analyser:
         doc_path = Path.home() / filePath
 
         self.progress["value"] = 25
-        self.progress_lbl.config(text="25%")
+        # self.progress_lbl.config(text="25%")
 
         self.update_analyse_data([
             str(file) for file in doc_path.iterdir()
@@ -59,7 +57,7 @@ class Analyser:
         print(files)
 
         self.progress["value"] = 50
-        self.progress_lbl.config(text="50%")
+        # self.progress_lbl.config(text="50%")
 
         for file in files:
             self.analyse_info["Size"] += round(os.path.getsize(file) / 1024, 1) #KB
