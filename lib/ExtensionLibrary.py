@@ -20,5 +20,10 @@ class ExtensionLibrary:
                 ".htm",    # HTML
                 ".xml",    # XML
                 ".csv"     # CSV
+            ],
+            "Pictures/Images": [
+                ".jpg", ".jpeg", ".png", ".gif", ".bmp",
+                ".tiff", ".tif", ".webp", ".heic", ".heif",
+                ".svg", ".raw", ".cr2", ".nef", ".orf", ".sr2"
             ]
         }

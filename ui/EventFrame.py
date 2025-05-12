@@ -11,10 +11,15 @@ class EventFrame:
         w1 = LabelFrame(self.root)
         w1.grid(row=r, column=c, padx=10, pady=10, sticky="nsew")
         canvas = Canvas(w1, width=w, height=h)
-        canvas.grid(row=0, column=1, sticky="nsew")
+        canvas.grid(row=r, column=c, sticky="nsew")
+
+        yscroll = ttk.Scrollbar(w1, orient=VERTICAL, command=canvas.yview)
+        yscroll.grid(row=r, column=c+1, sticky="ns")
+        canvas.configure(yscrollcommand=yscroll.set)
+        canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion = canvas.bbox('all')))
 
         self.frame = Frame(canvas)
-        canvas.create_window((0, 0), window=self.frame, anchor="nw")
+        canvas.create_window((0, 1), window=self.frame, anchor="nw")
 
     def insert(self, e, name, c, r, sticky=None):
         assert self.frame is not None, "show() EventFrame before inserting elements."
