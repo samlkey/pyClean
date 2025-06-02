@@ -13,19 +13,30 @@ class Analyser:
             "Total Files": 0,
             "Size": 0,
             #make this a map, then map each option
-            "Files": [],
+            "Files": {},
             "Option Size": {}
         }
+
+        #map wants to look like this
+        # Files: {
+        #     "Desktop": [
+        #         "c:/blah/blah",
+        #         "c:/test/1"
+        #     ],
+        #     "Documents": [
+        #         "c:/Users/Sam/Docs"
+        #     ]
+        # }
 
         self.progress["value"] = 0
         
         self.actions = {
             "Desktop": lambda: self.directory_clean("Desktop"),
-            "Pictures/Images": lambda: self.directory_clean("Pictures", "Pictures/Images"),
-            "Audio/Video": lambda: self.directory_clean("Videos", "Audio/Video"),
             "Documents": lambda: self.directory_clean("Documents", "Documents"),
             "Downloads": lambda: self.directory_clean("Downloads"),
-            "Music": lambda: self.directory_clean("Music", "Audio/Video")
+            "Music": lambda: self.directory_clean("Music", "Audio/Video"),
+            "Pictures/Images": lambda: self.directory_clean("Pictures", "Pictures/Images"),
+            "Audio/Video": lambda: self.directory_clean("Videos", "Audio/Video")    
         }
 
     def analyse(self, ol):
@@ -70,11 +81,15 @@ class Analyser:
             self.analyse_info["Size"] += os.path.getsize(file)
             option_size += os.path.getsize(file)
             self.analyse_info["Total Files"] += 1
-            self.analyse_info["Files"].append(str(file))
+            
+            #Find map for curr dir 
+            if filePath not in self.analyse_info["Files"]:
+                self.analyse_info["Files"][filePath] = []
+            else:
+                self.analyse_info["Files"][filePath].append(str(file))
 
         self.analyse_info["Option Size"][filePath] = option_size; 
 
-       
     def downloads():
         print("down")
 

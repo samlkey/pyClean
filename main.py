@@ -27,8 +27,47 @@ class MainWindow:
         file_menu.add_command(label="Options", command=self.option_menu)
 
         menubar.add_cascade(label="File", menu=file_menu)
-
         self.root.config(menu=menubar)
+
+        # Create a container frame
+        frame = Frame(self.root)
+        frame.grid(row=0, column=0, sticky="nsew")
+
+        # Make the root expandable
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
+
+        # Make the frame's grid expandable
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_rowconfigure(2, weight=1)
+        frame.grid_columnconfigure(0, weight=1)
+        frame.grid_columnconfigure(2, weight=1)
+
+        # Inner frame for the content
+        content = Frame(frame)
+        content.grid(row=1, column=1)
+
+        # Disclaimer
+        disclaimer = (
+            "This program is designed to clean-up your system. Therefore, it will remove any files selected by you.\n\n"
+            "This won't include any System files, and will only include safe to delete files.\n\n"
+            "However, the developer isn't responsible for any information lost as a result of using this program.\nPlease agree to this before using the program."
+        )
+
+        lbl = Label(content, text=disclaimer, font=self.fl.get("heading"), padx=10, pady=10, justify="left", wraplength=500)
+        pd1 = Label(content, font=self.fl.get("heading"), padx=10, pady=10)
+        btn = Button(content, text="I Agree", font=self.fl.get("heading"), width=30, height=2, command=lambda: self.main_menu(lbl, pd1, btn))
+
+        lbl.grid(row=0, column=0, pady=(0, 10))
+        pd1.grid(row=1, column=0, pady=(0, 10))
+        btn.grid(row=2, column=0)
+
+        self.root.mainloop()
+
+    def main_menu(self, *args):
+        for widget in args:
+            widget.grid_forget()
+
         sf = ScrollableFrame(self.root)
         sf.show(0, 0, (self.root.winfo_width() // 2) - 25, self.root.winfo_height() - 30) 
 
@@ -52,8 +91,6 @@ class MainWindow:
 
         # ---------------------------------------------
 
-        self.root.mainloop()
-
     def run_analyse(self):
         # CLEAR LABELS FROM FILES: 
         for i in range(self.ev.files_rendered):
@@ -71,6 +108,7 @@ class MainWindow:
         if info == None:
             return
         
+        print(info["Files"])
         print(info["Option Size"])
         self.update_information(info)
 
@@ -91,15 +129,20 @@ class MainWindow:
             i += 1
             self.ev.files_rendered += 1
 
-        for file in info["Files"]:
+        for key in info["Files"]:
             var = IntVar
-            self.ev.insert(Checkbutton(self.ev.frame, text=file, font=fonts.get("bold"), padx=15, variable=var), f"filelst_lbl{i}", 0, i+6, "nw")
+            self.ev.insert(Checkbutton(self.ev.frame, text=key, font=fonts.get("bold"), variable=var), f"filelst_lbl{i}", 0, i+6, "nw")
             i += 1
             self.ev.files_rendered += 1
 
+            for file in info["Files"][key]:
+                var = IntVar
+                self.ev.insert(Checkbutton(self.ev.frame, text=file, font=fonts.get("bold"), padx=15, variable=var), f"filelst_lbl{i}", 0, i+6, "nw")
+                i += 1
+                self.ev.files_rendered += 1
+
     def convert_size(self, input_size):
         size = ""
-
         if input_size < 1024:
             # KB (less than 1KB)
             size = f"{input_size:.2f} KB"
@@ -127,9 +170,4 @@ if __name__ == "__main__":
 
 #To do,
 #Adding "SETTINGS" to change stuff like the ExtensionLibrary
-#Directory break down on "Files:"
-
-#ttk vs tk
-#https://stackoverflow.com/questions/19561727/what-is-the-difference-between-the-widgets-of-tkinter-and-tkinter-ttk-in-python
-
-#make this a class mayb? so I can update progress bar without having to pass it through
+#indexes for rendering elements, like col and row should be handled by the ScrollableFrame and EventFrame objects
