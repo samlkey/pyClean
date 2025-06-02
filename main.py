@@ -55,7 +55,7 @@ class MainWindow:
         )
 
         lbl = Label(content, text=disclaimer, font=self.fl.get("heading"), padx=10, pady=10, justify="left", wraplength=500)
-        pd1 = Label(content, font=self.fl.get("heading"), padx=10, pady=10)
+        pd1 = Label(content)
         btn = Button(content, text="I Agree", font=self.fl.get("heading"), width=30, height=2, command=lambda: self.main_menu(lbl, pd1, btn))
 
         lbl.grid(row=0, column=0, pady=(0, 10))
@@ -141,6 +141,7 @@ class MainWindow:
                 i += 1
                 self.ev.files_rendered += 1
 
+
     def convert_size(self, input_size):
         size = ""
         if input_size < 1024:
@@ -168,6 +169,11 @@ if __name__ == "__main__":
     app = MainWindow()
     app.show()
 
-#To do,
+
+#TODO,
 #Adding "SETTINGS" to change stuff like the ExtensionLibrary
 #indexes for rendering elements, like col and row should be handled by the ScrollableFrame and EventFrame objects
+#Key buttons need to select the whole section
+
+#BUG,
+#Files is picking up folders, need to think of a way of handling folders (recursion)
