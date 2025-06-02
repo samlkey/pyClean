@@ -5,9 +5,9 @@
 ## Features
 
 - Deletes temporary files from user and system directories.
-- Cleans Windows Prefetch folder.
-- Empties the Recycle Bin.
-- Provides a simple command-line interface for ease of use.
+- Cleans Windows log files.
+- Allows multiple options for cleaning specific directories.
+- Provides a GUI to select what to delete.
 
 ## Installation
 
