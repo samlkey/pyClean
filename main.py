@@ -82,12 +82,12 @@ class MainWindow:
         #Event Frame ----------------------------------
 
         self.ev.show(1, 0, (self.root.winfo_width() // 2) - 70, self.root.winfo_height() - 50)      
-        self.ev.insert(ttk.Progressbar(self.ev.frame, orient="horizontal", length=400, mode="determinate", ), "prog_bar", 0, 0, "nw")
-        self.ev.insert(Button(self.ev.frame, text="Analyse", width=17, command=lambda: self.run_analyse()), "analyse_btn", 0, 1, "nw")
+        self.ev.insert(ttk.Progressbar(self.ev.frame, orient="horizontal", length=400, mode="determinate", ), "prog_bar", 0, "nw")
+        self.ev.insert(Button(self.ev.frame, text="Analyse", width=17, command=lambda: self.run_analyse()), "analyse_btn", 0, "nw")
         # self.ev.insert(Button(self.ev.frame, text="Run", width=17), "run_btn", 0, 1)   
         # self.ev.insert(Label(self.ev.frame, text="", font=self.fl.get("bold")), "filler", 0, 3, "nw")   
-        self.ev.insert(Label(self.ev.frame, text="Total Files: 0", font=self.fl.get("bold")), "file_lbl", 0, 2, "nw")
-        self.ev.insert(Label(self.ev.frame, text="Size: 0KB", font=self.fl.get("bold")), "size_lbl", 0, 3, "nw")
+        self.ev.insert(Label(self.ev.frame, text="Total Files: 0", font=self.fl.get("bold")), "file_lbl", 0, "nw")
+        self.ev.insert(Label(self.ev.frame, text="Size: 0KB", font=self.fl.get("bold")), "size_lbl", 0, "nw")
 
         # ---------------------------------------------
 
@@ -125,19 +125,19 @@ class MainWindow:
 
         i = 0
         for key, value in info["Option Size"].items():
-            self.ev.insert(Label(self.ev.frame, text=f"{key} Total: {self.convert_size(value)}", font=self.fl.get("bold")), f"filelst_lbl{i}", 0, i+6, "nw")
+            self.ev.insert(Label(self.ev.frame, text=f"{key} Total: {self.convert_size(value)}", font=self.fl.get("bold")), f"filelst_lbl{i}", 0, "nw")
             i += 1
             self.ev.files_rendered += 1
 
         for key in info["Files"]:
             var = IntVar
-            self.ev.insert(Checkbutton(self.ev.frame, text=key, font=fonts.get("bold"), variable=var), f"filelst_lbl{i}", 0, i+6, "nw")
+            self.ev.insert(Checkbutton(self.ev.frame, text=key, font=fonts.get("bold"), variable=var), f"filelst_lbl{i}", 0, "nw")
             i += 1
             self.ev.files_rendered += 1
 
             for file in info["Files"][key]:
                 var = IntVar
-                self.ev.insert(Checkbutton(self.ev.frame, text=file, font=fonts.get("bold"), padx=15, variable=var), f"filelst_lbl{i}", 0, i+6, "nw")
+                self.ev.insert(Checkbutton(self.ev.frame, text=file, font=fonts.get("bold"), padx=15, variable=var), f"filelst_lbl{i}", 0, "nw")
                 i += 1
                 self.ev.files_rendered += 1
 
@@ -158,8 +158,6 @@ class MainWindow:
             size = f"{input_size / (1024 ** 3):.2f} GB"
 
         return size
-
-
 
     def option_menu(self):
         print("Options clicked")
