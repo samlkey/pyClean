@@ -17,17 +17,6 @@ class Analyser:
             "Option Size": {}
         }
 
-        #map wants to look like this
-        # Files: {
-        #     "Desktop": [
-        #         "c:/blah/blah",
-        #         "c:/test/1"
-        #     ],
-        #     "Documents": [
-        #         "c:/Users/Sam/Docs"
-        #     ]
-        # }
-
         self.progress["value"] = 0
         
         self.actions = {

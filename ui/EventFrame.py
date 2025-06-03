@@ -7,6 +7,7 @@ class EventFrame:
         self.frame = None
         self.elements = {} 
         self.files_rendered = 0 
+        self.row_index = 0  
     
     def show(self, c, r, w, h):
         w1 = LabelFrame(self.root)
@@ -36,19 +37,19 @@ class EventFrame:
             "<Configure>",
             lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
         )
-
         canvas.create_window((0, 0), window=self.frame, anchor="nw")
 
-
-    def insert(self, e, name, c, r, sticky=None):
+    def insert(self, e, name, c, sticky=None):
         assert self.frame is not None, "show() EventFrame before inserting elements."
-        e.grid(column=c, row=r, sticky=sticky)
+        e.grid(column=c, row=self.row_index, sticky=sticky)
         self.elements[name] = e
+        self.row_index += 1
 
     def remove(self, name):
         widget = self.elements.get(name)
         if widget:
             widget.destroy()
             del self.elements[name]
+            self.row_index -= 1
         else:
             print(f"Element '{name}' not found.")
