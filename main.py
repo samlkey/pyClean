@@ -1,12 +1,11 @@
 #dependencies
 import tkinter as tk
+from tkinter import ttk
+from tkinter import *
 
 from ui import ScrollableFrame, EventFrame
 from lib import FontLibrary, OptionLibrary
 from methods import Analyser
-
-from tkinter import ttk
-from tkinter import *
 
 class MainWindow:
     def __init__(self):
@@ -15,52 +14,93 @@ class MainWindow:
         self.ol = OptionLibrary()
         self.ev = EventFrame(self.root)
 
+        # Configure main window
         self.root.title("pyClean")
-        self.root.geometry("1200x400")
-        self.root.resizable(height=FALSE, width=FALSE)
+        self.root.geometry("1200x700")  # Larger default size
+        self.root.configure(bg='#1E1E1E')  # Dark background
+        self.root.resizable(False, False)  # Make window non-resizable
+        
+        # Configure modern styles
+        self.style = ttk.Style()
+        self.style.configure("Modern.TButton",
+                           font=('Segoe UI', 11),
+                           background='#007AFF',
+                           foreground='#FFFFFF',
+                           padding=10)
+
         self.root.update_idletasks()
 
     def show(self):
-        menubar = tk.Menu(self.root)
-        
-        file_menu = tk.Menu(menubar, tearoff=0)
+        # Modern menubar
+        menubar = tk.Menu(self.root, bg='#2D2D2D', fg='#FFFFFF', relief=FLAT)
+        file_menu = tk.Menu(menubar, tearoff=0, bg='#2D2D2D', fg='#FFFFFF')
         file_menu.add_command(label="Options", command=self.option_menu)
-
         menubar.add_cascade(label="File", menu=file_menu)
         self.root.config(menu=menubar)
 
-        # Create a container frame
-        frame = Frame(self.root)
-        frame.grid(row=0, column=0, sticky="nsew")
+        # Main container frame
+        frame = Frame(self.root, bg='#1E1E1E')
+        frame.place(relx=0.5, rely=0.5, anchor="center")  # Center the frame
 
-        # Make the root expandable
-        self.root.grid_rowconfigure(0, weight=1)
-        self.root.grid_columnconfigure(0, weight=1)
+        # Center content frame with modern card-like appearance
+        content = Frame(frame, bg='#2D2D2D', padx=40, pady=40)
+        content.grid(row=0, column=0)
 
-        # Make the frame's grid expandable
-        frame.grid_rowconfigure(0, weight=1)
-        frame.grid_rowconfigure(2, weight=1)
-        frame.grid_columnconfigure(0, weight=1)
-        frame.grid_columnconfigure(2, weight=1)
+        # App title/logo
+        Label(content,
+              text="pyClean",
+              font=('Segoe UI', 32, 'bold'),
+              bg='#2D2D2D',
+              fg='#FFFFFF').grid(row=0, column=0, sticky="w", pady=(0, 20))
 
-        # Inner frame for the content
-        content = Frame(frame)
-        content.grid(row=1, column=1)
+        # Subtitle
+        Label(content,
+              text="System Cleanup Utility",
+              font=('Segoe UI', 14),
+              bg='#2D2D2D',
+              fg='#888888').grid(row=1, column=0, sticky="w", pady=(0, 30))
 
-        # Disclaimer
-        disclaimer = (
-            "This program is designed to clean-up your system. Therefore, it will remove any files selected by you.\n\n"
-            "This won't include any System files, and will only include safe to delete files.\n\n"
-            "However, the developer isn't responsible for any information lost as a result of using this program.\nPlease agree to this before using the program."
-        )
+        # Disclaimer sections
+        disclaimers = [
+            ("Purpose", "This program is designed to clean up your system by removing selected files."),
+            ("Safety", "Only safe-to-delete files will be included. System files are automatically excluded."),
+            ("Disclaimer", "The developer is not responsible for any information lost as a result of using this program.")
+        ]
 
-        lbl = Label(content, text=disclaimer, font=self.fl.get("heading"), padx=10, pady=10, justify="left", wraplength=500)
-        pd1 = Label(content)
-        btn = Button(content, text="I Agree", font=self.fl.get("heading"), width=30, height=2, command=lambda: self.main_menu(lbl, pd1, btn))
+        for i, (title, text) in enumerate(disclaimers):
+            # Section title
+            Label(content,
+                  text=title,
+                  font=('Segoe UI', 12, 'bold'),
+                  bg='#2D2D2D',
+                  fg='#007AFF').grid(row=i*2 + 2, column=0, sticky="w", pady=(20, 5))
+            
+            # Section content
+            Label(content,
+                  text=text,
+                  font=('Segoe UI', 11),
+                  bg='#2D2D2D',
+                  fg='#FFFFFF',
+                  wraplength=600,
+                  justify="left").grid(row=i*2 + 3, column=0, sticky="w")
 
-        lbl.grid(row=0, column=0, pady=(0, 10))
-        pd1.grid(row=1, column=0, pady=(0, 10))
-        btn.grid(row=2, column=0)
+        # Spacer
+        Frame(content, height=20, bg='#2D2D2D').grid(row=8, column=0)
+
+        # Agreement button with modern styling
+        btn = Button(content,
+                    text="I Understand and Agree",
+                    font=('Segoe UI', 11, 'bold'),
+                    bg='#007AFF',
+                    fg='#FFFFFF',
+                    activebackground='#0051A8',
+                    activeforeground='#FFFFFF',
+                    relief=FLAT,
+                    padx=30,
+                    pady=12,
+                    cursor="hand2",
+                    command=lambda: self.main_menu(content))
+        btn.grid(row=9, column=0, sticky="e", pady=(20, 0))
 
         self.root.mainloop()
 
