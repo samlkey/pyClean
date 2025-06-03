@@ -113,19 +113,18 @@ class MainWindow:
 
         i = 1
         for category, options in self.ol.options.items():
-            sf.insert(Label(sf.frame, text=category, font=self.fl.get("heading"), padx=10, pady=10), 0, i)
+            sf.insert(Label(sf.frame, text=category, font=self.fl.get("heading"), padx=10, pady=10, bg='#2D2D2D', fg='#FFFFFF'), 0, i)
             i += 1
             for name, var in options.items():
-                sf.insert(Checkbutton(sf.frame, text=name, font=self.fl.get("option"), variable=var), 1, i)
+                sf.insert(Checkbutton(sf.frame, text=name, font=self.fl.get("option"), variable=var, 
+                                    bg='#2D2D2D', fg='#FFFFFF', selectcolor='#2D2D2D', activebackground='#2D2D2D', activeforeground='#FFFFFF'), 1, i)
                 i += 1
         
         #Event Frame ----------------------------------
 
         self.ev.show(1, 0, (self.root.winfo_width() // 2) - 70, self.root.winfo_height() - 50)      
-        self.ev.insert(ttk.Progressbar(self.ev.frame, orient="horizontal", length=400, mode="determinate", ), "prog_bar", 0, "nw")
+        self.ev.insert(ttk.Progressbar(self.ev.frame, orient="horizontal", length=400, mode="determinate"), "prog_bar", 0, "nw")
         self.ev.insert(Button(self.ev.frame, text="Analyse", width=17, command=lambda: self.run_analyse()), "analyse_btn", 0, "nw")
-        # self.ev.insert(Button(self.ev.frame, text="Run", width=17), "run_btn", 0, 1)   
-        # self.ev.insert(Label(self.ev.frame, text="", font=self.fl.get("bold")), "filler", 0, 3, "nw")   
         self.ev.insert(Label(self.ev.frame, text="Total Files: 0", font=self.fl.get("bold")), "file_lbl", 0, "nw")
         self.ev.insert(Label(self.ev.frame, text="Size: 0KB", font=self.fl.get("bold")), "size_lbl", 0, "nw")
 
